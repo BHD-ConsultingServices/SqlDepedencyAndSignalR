@@ -1,0 +1,27 @@
+﻿@model IEnumerable<SqlDependency.Spike.Models.ScheduleViewModel>
+
+<div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr class="bg-">
+                <th>@Html.DisplayNameFor(model => model.RaceNo)</th>
+                <th>@Html.DisplayNameFor(model => model.HorseName)</th>
+                <th>@Html.DisplayNameFor(model => model.Rider)</th>
+                <th>@Html.DisplayNameFor(model => model.RaceTime)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td> @Html.DisplayFor(modelItem => item.RaceNo)</td>
+                    <td> @Html.DisplayFor(modelItem => item.HorseName)</td>
+                    <td> @Html.DisplayFor(modelItem => item.Rider)</td>
+                    <td> @Html.DisplayFor(modelItem => item.RaceTime)</td>
+                    <td> @Html.DisplayFor(modelItem => item.Status)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

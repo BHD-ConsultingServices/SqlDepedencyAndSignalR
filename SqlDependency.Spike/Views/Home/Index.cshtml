@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Race Schedules";
+}
+
+<div>
+    <div class="page-header"><h4>Sql Dependency and SignalR Spike</h4></div>
+
+    <div class="alert alert-success">
+        <p>Using both the SignalR and SqlDependency, the below table show automatically refresh when any changes are dectected from the database.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="racesTable"></div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.1.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/signalRHubs/RaceHub.js"></script>
+}

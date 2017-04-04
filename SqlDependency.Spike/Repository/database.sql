@@ -1,0 +1,126 @@
+﻿USE [master]
+GO
+IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'RaceSpike')
+BEGIN
+	ALTER DATABASE [RaceSpike] SET SINGLE_USER WITH ROLLBACK IMMEDIATE 
+	EXEC sp_removedbreplication	'RaceSpike'
+	DROP DATABASE RaceSpike
+END
+GO
+CREATE DATABASE [RaceSpike]
+GO
+ALTER DATABASE [RaceSpike] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [RaceSpike].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [RaceSpike] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [RaceSpike] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [RaceSpike] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [RaceSpike] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [RaceSpike] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [RaceSpike] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [RaceSpike] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [RaceSpike] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [RaceSpike] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [RaceSpike] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [RaceSpike] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [RaceSpike] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [RaceSpike] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [RaceSpike] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [RaceSpike] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [RaceSpike] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [RaceSpike] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [RaceSpike] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [RaceSpike] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [RaceSpike] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [RaceSpike] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [RaceSpike] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [RaceSpike] SET RECOVERY FULL 
+GO
+ALTER DATABASE [RaceSpike] SET  MULTI_USER 
+GO
+ALTER DATABASE [RaceSpike] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [RaceSpike] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [RaceSpike] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [RaceSpike] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'RaceSpike', N'ON'
+GO
+USE [RaceSpike]
+GO
+/****** Object:  User [NT Service\MSSQLSERVER]    Script Date: 2017-04-04 01:07:26 PM ******/
+CREATE USER [NT Service\MSSQLSERVER] FOR LOGIN [NT Service\MSSQLSERVER] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [NT Service\MSSQLSERVER]
+GO
+/****** Object:  Table [dbo].[Race]    Script Date: 2017-04-04 01:07:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Race](
+	[RaceId] [uniqueidentifier] NOT NULL,
+	[RaceNo] [int] IDENTITY(1,1) NOT NULL,
+	[HorseName] [varchar](150) NULL,
+	[Rider] [varchar](250) NULL,
+	[RaceTime] [datetime] NULL,
+	[Status] [varchar](50) NULL,
+ CONSTRAINT [PK_Race] PRIMARY KEY CLUSTERED 
+(
+	[RaceId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+SET IDENTITY_INSERT [dbo].[Race] ON 
+
+GO
+INSERT [dbo].[Race] ([RaceId], [RaceNo], [HorseName], [Rider], [RaceTime], [Status]) VALUES (N'a4474cba-08f0-41d2-a02a-afa3c486babf', 2, N'Jacky Lee', N'John Smith', CAST(N'2017-03-29 10:25:39.637' AS DateTime), N'OnSchedule')
+GO
+INSERT [dbo].[Race] ([RaceId], [RaceNo], [HorseName], [Rider], [RaceTime], [Status]) VALUES (N'77989cdf-51f6-4702-80f1-c9859b4a2f72', 1, N'Legs of Thunder', N'Perter Smith', CAST(N'2017-03-29 10:25:39.637' AS DateTime), N'Cancelled')
+GO
+SET IDENTITY_INSERT [dbo].[Race] OFF
+GO
+/****** Object:  StoredProcedure [dbo].[SqlQueryNotificationStoredProcedure-3006bec8-1b20-4aea-a042-8656dae32fdb]    Script Date: 2017-04-04 01:07:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SqlQueryNotificationStoredProcedure-3006bec8-1b20-4aea-a042-8656dae32fdb] AS BEGIN BEGIN TRANSACTION; RECEIVE TOP(0) conversation_handle FROM [SqlQueryNotificationService-3006bec8-1b20-4aea-a042-8656dae32fdb]; IF (SELECT COUNT(*) FROM [SqlQueryNotificationService-3006bec8-1b20-4aea-a042-8656dae32fdb] WHERE message_type_name = 'http://schemas.microsoft.com/SQL/ServiceBroker/DialogTimer') > 0 BEGIN if ((SELECT COUNT(*) FROM sys.services WHERE name = 'SqlQueryNotificationService-3006bec8-1b20-4aea-a042-8656dae32fdb') > 0)   DROP SERVICE [SqlQueryNotificationService-3006bec8-1b20-4aea-a042-8656dae32fdb]; if (OBJECT_ID('SqlQueryNotificationService-3006bec8-1b20-4aea-a042-8656dae32fdb', 'SQ') IS NOT NULL)   DROP QUEUE [SqlQueryNotificationService-3006bec8-1b20-4aea-a042-8656dae32fdb]; DROP PROCEDURE [SqlQueryNotificationStoredProcedure-3006bec8-1b20-4aea-a042-8656dae32fdb]; END COMMIT TRANSACTION; END
+GO
+USE [master]
+GO
+ALTER DATABASE [RaceSpike] SET  READ_WRITE 
+GO
